@@ -15,7 +15,7 @@ const LatestNews = () => {
       title: "World Hearing Day 2024",
       date: "March 6, 2024",
       description: "World Hearing Day 3rd March 2024",
-      image: "/images/WorldHearing.jpg",
+      image: "/images/Worldhearing.jpg",
       link: "/",
     },
     {
