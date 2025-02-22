@@ -12,20 +12,17 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-white shadow-md backdrop-blur-lg">
       <div className="container flex flex-col sm:flex-row items-center justify-between py-4">
 
-        {/* 🔹 Small Screen */}
         <div className="flex items-center justify-between w-full sm:hidden ml-6">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-dark">
             <RiMenu3Fill className="h-5 w-7" />
           </button>
 
-          {/* Mobile Logo */}
           <Link href="/" className="flex items-center gap-2 ml-auto">
             <Image src="/images/logo-1.png" alt="SOL Logo" width={40} height={40} className="rounded-full" priority />
             <span className="text-dark animate-slideRightLeft">SOCIETY OF OTOLARYNGOLOGISTS OF NEPAL</span>
           </Link>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="absolute left-4 mt-12 w-72 bg-white shadow-lg rounded-md z-10">
             <div className="flex justify-end items-center mb-4 px-4">
@@ -63,18 +60,19 @@ export default function Navbar() {
           </nav>
         </div>
 
-        <div className="flex justify-end gap-4 ml-60 mr-4 sm:mt-10 md:ml-16 xl:ml-30">
-          <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-dark p-2">
+        <div className="flex justify-end gap-4 ml-6 mr-4 sm:mt-0 md:ml-10 md:mt-8">
+          <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-dark p-2 mt-9">
             <RiSearchLine className="h-5 w-5" />
           </button>
 
-          <button className=" sm:inline-flex p-2 bg-primary text-white rounded-md hover:bg-primary-dark">
+          <button className="p-2 px-4 bg-primary text-white rounded-md hover:bg-primary-dark flex items-center mr-6 mt-9">
             <RiUserLine className="h-4 w-4 mr-2" />
             Login
           </button>
         </div>
       </div>
 
+      {/* Search Bar */}
       {isSearchOpen && (
         <div className="border-t bg-white shadow-lg">
           <div className="container py-4">
