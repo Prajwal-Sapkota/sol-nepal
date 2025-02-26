@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 text-light lg:justify-items-center">
           <div className="md:pr-6">
-            <h3 className="font-bold text-lg mb-4 text-primary">Quick Links</h3>
+            <h3 className="font-bold text-lg mb-4 text-gray-300">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/about" className="text-gray-300 hover:text-primary transition">
@@ -33,7 +33,7 @@ export default function Footer() {
           </div>
 
           <div className="md:pr-6">
-            <h3 className="font-bold text-lg mb-4 text-primary text-justify">Contact</h3>
+            <h3 className="font-bold text-lg mb-4 text-gray-300 text-justify">Contact</h3>
             <address className="text-gray-300 not-italic leading-relaxed">
               <p className="text-gray-300">Society of Otolaryngologists of Nepal</p>
               <p className="text-gray-300">GPO Box 14351, Kathmandu Medical College</p>
@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-4 text-primary">Follow Us</h3>
+            <h3 className="font-bold text-lg mb-4 text-gray-300">Follow Us</h3>
             <div className="flex space-x-4">
               <Link href="#" className="text-gray-300 hover:text-primary transition">
                 <FaFacebookF className="h-6 w-6" />

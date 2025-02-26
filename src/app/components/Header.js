@@ -67,7 +67,7 @@ export default function Header() {
             <span className="text-xl font-bold text-dark animate-slideRightLeft">SOCIETY OF OTOLARYNGOLOGISTS OF NEPAL</span>
           </Link>
 
-          <nav className="flex gap-4 lg:gap-8  md:gap-3">
+          <nav className="flex gap-4 lg:gap-8  md:gap-3 ">
             <Link href="/" className={`text-lg font-medium ${isActive('/')}`}>Home</Link>
             <Link href="/about" className={`text-lg font-medium ${isActive('/about')}  whitespace-nowrap`}>About Us</Link>
             <Link href="/members" className={`text-lg font-medium ${isActive('/members')}`}>Members</Link>
@@ -78,7 +78,7 @@ export default function Header() {
           </nav>
         </div>
 
-        <div className="flex justify-end gap-4 ml-6 mr-4 sm:mt-0 md:ml-4 md:mt-8 md:gap-2">
+        <div className="flex justify-end gap-4 ml-6 mr-4 sm:mt-0 md:ml-4 md:mt-6 md:gap-2 ">
           <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-dark p-2 mt-9">
             <RiSearchLine className="h-5 w-5" />
           </button>
@@ -92,14 +92,14 @@ export default function Header() {
 
       {/* Search Bar */}
       {isSearchOpen && (
-        <div className="border-t bg-white shadow-lg">
-          <div className="container py-4">
+        <div className="border-t bg-white shadow-lg absolute left-0 right-0">
+          <div className="container mx-auto py-4 px-4">
             <div className="relative">
-              <RiSearchLine className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <RiSearchLine className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full pl-8 pr-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
           </div>
