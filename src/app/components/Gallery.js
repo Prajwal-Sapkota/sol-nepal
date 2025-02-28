@@ -22,7 +22,7 @@ const Gallery = ({ images, title }) => {
 
   const handleClose = () => setSelectedIndex(null)
 
-  const handleKeyDown = (e) => {
+  const handleKey = (e) => {
     if (e.key === "ArrowLeft") handlePrevImage()
     if (e.key === "ArrowRight") handleNextImage()
     if (e.key === "Escape") handleClose()
@@ -30,8 +30,8 @@ const Gallery = ({ images, title }) => {
 
   useEffect(() => {
     if (selectedIndex !== null) {
-      document.addEventListener("keydown", handleKeyDown)
-      return () => document.removeEventListener("keydown", handleKeyDown)
+      document.addEventListener("keydown", handleKey)
+      return () => document.removeEventListener("keydown", handleKey)
     }
   }, [selectedIndex])
 
