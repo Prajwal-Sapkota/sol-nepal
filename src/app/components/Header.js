@@ -31,14 +31,14 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-white shadow-md backdrop-blur-lg">
       <div className="container flex flex-col sm:flex-row items-center justify-between py-4">
 
-        <div className="flex items-center justify-between w-full sm:hidden ml-6">
+        <div className="flex items-center justify-between w-full sm:hidden px-4 py-3">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-dark">
             <RiMenu3Fill className="h-5 w-7" />
           </button>
 
           <Link href="/" className="flex items-center gap-2 ml-auto">
             <Image src="/images/logo-1.png" alt="SOL Logo" width={40} height={40} className="rounded-full" priority />
-            <span className="text-dark animate-slideRightLeft">SOCIETY OF OTOLARYNGOLOGISTS OF NEPAL</span>
+            <span className=" text-dark text-sm text-slide animate-slideToLogoSm  ">SOCIETY OF OTOLARYNGOLOGISTS OF NEPAL</span>
           </Link>
         </div>
 
@@ -64,7 +64,7 @@ export default function Header() {
         <div className="hidden sm:flex sm:flex-col gap-6 ml-5 w-full">
           <Link href="/" className="flex items-center gap-2 justify-center sm:justify-start">
             <Image src="/images/logo-1.png" alt="SOL Logo" width={50} height={50} className="rounded-full" priority />
-            <span className="text-xl font-bold text-dark animate-slideRightLeft">SOCIETY OF OTOLARYNGOLOGISTS OF NEPAL</span>
+            <span className="text-xl font-bold text-dark animate-slideToLogoSm">SOCIETY OF OTOLARYNGOLOGISTS OF NEPAL</span>
           </Link>
 
           <nav className="flex gap-4 lg:gap-8  md:gap-3 ">

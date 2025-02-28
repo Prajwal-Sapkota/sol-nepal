@@ -19,14 +19,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
-@keyframes slideRightLeft {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-2%); }
-}
 
-.text-slide {
-  animation: slideRightLeft 5s linear infinite;
-}
+
 .text-dark {
   color: #2C5F2D; 
 }
