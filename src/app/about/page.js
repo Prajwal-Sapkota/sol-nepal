@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { motion, AnimatePresence } from "framer-motion"
 
 const AboutUs = () => {
   const sections = [
@@ -113,30 +112,51 @@ const AboutUs = () => {
           {sections.map((section, index) => (
             <div key={index} className="border-b pb-4 border-primary">
               <button
-                className="w-full flex justify-between items-center text-left font-semibold text-lg py-2 text-dark hover:text-primary"
+                className="w-full flex justify-between items-center text-left font-semibold text-lg py-2 text-dark hover:text-primary transition-colors duration-300"
                 onClick={() => toggleSection(index)}
               >
                 {section.title}
-                {activeIndex === index ? <FaChevronUp /> : <FaChevronDown />}
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: activeIndex === index ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <FaChevronDown />
+                </motion.div>
               </button>
-              {activeIndex === index && (
-                <div className="mt-4">
-                  <p className="text-green-900 leading-relaxed text-justify">
-                    {section.content.split("\n").map((paragraph, idx) => (
-                      <span key={idx}>
-                        {paragraph}
-                        <br />
-                      </span>
-                    ))}
-                  </p>
-                </div>
-              )}
+              <AnimatePresence initial={false}>
+                {activeIndex === index && (
+                  <motion.div
+                    key="content"
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                    variants={{
+                      open: { opacity: 1, height: "auto" },
+                      collapsed: { opacity: 0, height: 0 },
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    <div className="mt-4">
+                      <p className="text-green-900 leading-relaxed text-justify">
+                        {section.content.split("\n").map((paragraph, idx) => (
+                          <span key={idx}>
+                            {paragraph}
+                            <br />
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AboutUs;
+export default AboutUs
+
