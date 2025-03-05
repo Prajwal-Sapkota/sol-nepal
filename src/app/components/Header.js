@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import { RiMenu3Fill, RiCloseLine, RiSearchLine, RiUserLine } from "react-icons/ri"
 import Link from "next/link"
@@ -10,94 +11,117 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const pathname = usePathname()
 
   useEffect(() => {
     setIsClient(true)
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const isActive = (path) => {
     if (!isClient) return ""
     return pathname === path
-      ? "bg-primary text-white rounded-lg px-4 py-2 font-semibold transition-all duration-300 ease-in-out"
-      : "text-dark"
+      ? "text-dark border-b-2 border-primary font-medium"
+      : "text-gray-600 hover:text-primary hover:border-b-2 hover:border-primary/50 transition-all duration-300"
   }
 
   if (!isClient) return null
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full  bg-gray-100`}
+      className={`sticky top-0 z-50 w-full bg-gray-100 transition-all duration-300 ${
+        isScrolled ? "shadow-md py-2" : "shadow-sm py-3"
+      }`}
     >
-      <div className="container mx-auto px-1 py-4">
-        <div className="flex justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="relative w-10 h-10 sm:w-12 sm:h-12 overflow-hidden rounded-full border-2 border-dark">
+      <div className="container mx-auto px-4">
+        {/* Top section with logo and buttons */}
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center space-x-3">
+            <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-primary/80 sm:h-12 sm:w-12">
               <Image src="/images/logo-1.png" alt="SOL Logo" layout="fill" objectFit="cover" priority />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl sm:text-xl lg:text-2xl font-bold text-dark">SOL Nepal</span>
-              <span className="text-sm text-gray-600 hidden sm:inline">Society of Otolaryngologists of Nepal</span>
+              <span className="text-xl font-bold text-gray-800 sm:text-xl lg:text-2xl">SOL Nepal</span>
+              <span className="hidden text-xs text-gray-500 sm:inline">Society of Otolaryngologists of Nepal</span>
             </div>
           </Link>
 
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-300"
+              className="rounded-full bg-gray-50 p-2 text-gray-700 transition-all duration-300 hover:bg-gray-100 hover:text-primary"
+              aria-label="Toggle search"
             >
               <RiSearchLine className="h-5 w-5" />
             </button>
 
-            <button className="flex items-center space-x-1 px-3 py-1 sm:px-4 sm:py-2 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors duration-300 text-sm sm:text-base">
+            <button className="flex items-center space-x-1 rounded-full bg-primary px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-md sm:px-4 sm:py-2 sm:text-base">
               <RiUserLine className="h-4 w-4" />
               <span>Login</span>
             </button>
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="sm:hidden p-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-300"
+              className="rounded-full bg-gray-50 p-2 text-gray-700 transition-all duration-300 hover:bg-gray-100 hover:text-primary sm:hidden"
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? <RiCloseLine className="h-6 w-6" /> : <RiMenu3Fill className="h-6 w-6" />}
             </button>
           </div>
         </div>
 
-        <nav className="hidden sm:flex flex-wrap lg:justify-center md:justify-evenly gap-2 lg:gap-8  lg:mt-2 md:mt-6">
-          <Link href="/" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/")}`}>
-            Home
-          </Link>
-          <Link href="/about" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/about")} whitespace-nowrap`}>
-            About Us
-          </Link>
-          <Link href="/members" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/members")}`}>
-            Members
-          </Link>
-          <Link href="/constitution" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/constitution")}`}>
-            Constitution
-          </Link>
-          <Link href="/events" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/events")}`}>
-            Events
-          </Link>
-          <Link href="/activities" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/activities")}`}>
-            Activities
-          </Link>
-          <Link href="/consent" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/consent")}`}>
-            Consent Forms
-          </Link>
-          <Link href="/journal" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/journal")}`}>
-            Journal
-          </Link>
-          <Link href="/gallery" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/gallery")}`}>
-            Gallery
-          </Link>
-          <Link href="/contact" className={`text-xs lg:text-xl lg:font-medium md:font-semibold ${isActive("/contact")}`}>
-            Contact
-          </Link>
+        {/* Desktop Navigation */}
+        <nav className="mt-4 hidden justify-center sm:flex">
+          <div className="flex flex-wrap items-center justify-center gap-1 md:gap-3 lg:gap-6">
+            <Link href="/" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/")}`}>
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className={`px-2 py-1 text-sm md:text-base lg:text-lg whitespace-nowrap ${isActive("/about")}`}
+            >
+              About Us
+            </Link>
+            <Link href="/members" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/members")}`}>
+              Members
+            </Link>
+            <Link
+              href="/constitution"
+              className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/constitution")}`}
+            >
+              Constitution
+            </Link>
+            <Link href="/events" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/events")}`}>
+              Events
+            </Link>
+            <Link href="/activities" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/activities")}`}>
+              Activities
+            </Link>
+            <Link href="/consent" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/consent")}`}>
+              Consent Forms
+            </Link>
+            <Link href="/journal" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/journal")}`}>
+              Journal
+            </Link>
+            <Link href="/gallery" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/gallery")}`}>
+              Gallery
+            </Link>
+            <Link href="/contact" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/contact")}`}>
+              Contact
+            </Link>
+          </div>
         </nav>
       </div>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -105,24 +129,38 @@ export default function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="sm:hidden bg-white shadow-lg overflow-hidden"
+            className="overflow-hidden bg-white shadow-lg sm:hidden"
           >
-            <nav className="container mx-auto px-4 py-4 ">
-              {["/", "/about", "/members","/constitution", "/events","/activities","/consent", "/journal", "/gallery", "/contact"].map((path) => (
-                <Link key={path} href={path} onClick={() => setIsMenuOpen(false)}>
-                  <motion.div
-                    className={`py-2 text-lg font-medium ${isActive(path)}`}
-                    whileHover={{ x: 10 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {path === "/" ? "Home" : path.slice(1).charAt(0).toUpperCase() + path.slice(2)}
-                  </motion.div>
-                </Link>
-              ))}
+            <nav className="container mx-auto px-4 py-2">
+              <div className="flex flex-col divide-y divide-gray-100">
+                {[
+                  { path: "/", label: "Home" },
+                  { path: "/about", label: "About Us" },
+                  { path: "/members", label: "Members" },
+                  { path: "/constitution", label: "Constitution" },
+                  { path: "/events", label: "Events" },
+                  { path: "/activities", label: "Activities" },
+                  { path: "/consent", label: "Consent Forms" },
+                  { path: "/journal", label: "Journal" },
+                  { path: "/gallery", label: "Gallery" },
+                  { path: "/contact", label: "Contact" },
+                ].map((item) => (
+                  <Link key={item.path} href={item.path} onClick={() => setIsMenuOpen(false)}>
+                    <motion.div
+                      className={`py-3 text-base ${pathname === item.path ? "text-dark font-medium" : "text-gray-600"}`}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {item.label}
+                    </motion.div>
+                  </Link>
+                ))}
+              </div>
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Search Overlay */}
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
@@ -132,14 +170,21 @@ export default function Header() {
             transition={{ duration: 0.3 }}
             className="absolute left-0 right-0 bg-white shadow-lg"
           >
-            <div className="container mx-auto py-4 px-4">
-              <div className="relative">
-                <RiSearchLine className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <div className="container mx-auto px-4 py-4">
+              <div className="relative flex items-center">
+                <RiSearchLine className="absolute left-4 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
+                  className="w-full rounded-full bg-gray-50 py-3 pl-12 pr-4 text-base transition-all duration-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  autoFocus
                 />
+                <button
+                  onClick={() => setIsSearchOpen(false)}
+                  className="absolute right-4 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                >
+                  <RiCloseLine className="h-5 w-5" />
+                </button>
               </div>
             </div>
           </motion.div>

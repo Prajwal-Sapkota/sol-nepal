@@ -31,7 +31,7 @@ const Banner = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-12">
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-12">
       <div className="absolute inset-0 z-0">
         {images.map((image, index) => (
           <Image
