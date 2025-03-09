@@ -6,7 +6,7 @@ import Link from "next/link";
 import { RiArrowRightLine } from "react-icons/ri";
 
 const fetchEvents = async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts"); // API returns an array
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts"); 
   if (!response.ok) throw new Error("Failed to fetch");
   return response.json(); 
 };
