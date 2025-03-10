@@ -8,7 +8,7 @@ const MembersPage = () => {
           SOL Members
         </button>
       </Link>
-      <Link href="members/membership-form">
+      <Link href="/members/membershipform">
         <button className="w-full sm:w-80 px-10 py-3 text-lg sm:text-xl bg-primary text-white rounded-lg hover:bg-primary-dark transition">
           Membership Form
         </button>
