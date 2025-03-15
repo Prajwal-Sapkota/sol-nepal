@@ -95,7 +95,7 @@ export default function ExecutiveCommittee() {
             >
               <div className="w-24 h-30 mx-auto overflow-hidden bg-gray-200 mt-4">
                 <Image
-                  src={member.image || "/placeholder.svg?height=300&width=300"}
+                  src={member.image}
                   alt={member.name}
                   width={128}
                   height={128}

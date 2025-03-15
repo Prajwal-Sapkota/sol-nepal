@@ -1,39 +1,85 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { RiMenu3Fill, RiCloseLine, RiSearchLine, RiUserLine } from "react-icons/ri"
-import Link from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import { AnimatePresence, motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react";
+import { RiMenu3Fill, RiCloseLine, RiSearchLine, RiUserLine, RiArrowDownSLine } from "react-icons/ri";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Header() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isClient, setIsClient] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [membersDropdownOpen, setMembersDropdownOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const membersDropdownRef = useRef(null);
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
-    setIsClient(true)
+    setIsClient(true);
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
+      setIsScrolled(window.scrollY > 10);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    // Initial check
+    handleResize();
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const isActive = (path) => {
-    if (!isClient) return ""
+    if (!isClient) return "";
     return pathname === path
       ? "text-dark border-b-2 border-primary font-medium"
-      : "text-gray-600 hover:text-primary hover:border-b-2 hover:border-primary/50 transition-all duration-300"
-  }
+      : "text-gray-600 hover:text-primary hover:border-b-2 hover:border-primary/50 transition-all duration-300";
+  };
 
-  if (!isClient) return null
+  const isActiveDropdown = () => {
+    if (!isClient) return "";
+    return pathname.startsWith("/members")
+      ? "text-dark border-b-2 border-primary font-medium"
+      : "text-gray-600 hover:text-primary hover:border-b-2 hover:border-primary/50 transition-all duration-300";
+  };
+
+  const membersLinks = [
+    { href: "/sol-members", label: "SOL Members" },
+    { href: "/members/membershipform", label: "Membership Form" },
+    { href: "/members/executivecommitte", label: "Executive Committee" },
+  ];
+
+  const handleMouseEnter = () => {
+    if (!isMobile) {
+      setMembersDropdownOpen(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) {
+      setMembersDropdownOpen(false);
+    }
+  };
+
+  const handleMobileToggle = () => {
+    if (isMobile) {
+      setMembersDropdownOpen(!membersDropdownOpen);
+    }
+  };
+
+  if (!isClient) return null;
 
   return (
     <header
@@ -42,7 +88,6 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-4">
-        {/* Top section with logo and buttons */}
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
             <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-primary/80 sm:h-12 sm:w-12">
@@ -90,9 +135,47 @@ export default function Header() {
             >
               About Us
             </Link>
-            <Link href="/members" className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/members")}`}>
-              Members
-            </Link>
+
+            {/* Members Dropdown */}
+            <div
+              className="relative"
+              ref={membersDropdownRef}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                onClick={handleMobileToggle}
+                className={`flex items-center px-2 py-1 text-sm md:text-base lg:text-lg ${isActiveDropdown()}`}
+              >
+                Members
+                <RiArrowDownSLine
+                  className={`ml-1 transition-transform duration-200 ${membersDropdownOpen ? "transform rotate-180" : ""}`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {membersDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute left-0 z-50 mt-1 w-56 rounded-lg border border-gray-100 bg-white py-2 shadow-lg"
+                  >
+                    {membersLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors duration-200"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <Link
               href="/constitution"
               className={`px-2 py-1 text-sm md:text-base lg:text-lg ${isActive("/constitution")}`}
@@ -133,26 +216,79 @@ export default function Header() {
           >
             <nav className="container mx-auto px-4 py-2">
               <div className="flex flex-col divide-y divide-gray-100">
-                {[
-                  { path: "/", label: "Home" },
-                  { path: "/about", label: "About Us" },
-                  { path: "/members", label: "Members" },
-                  { path: "/constitution", label: "Constitution" },
+                <Link href="/" onClick={() => setIsMenuOpen(false)}>
+                  <motion.div
+                    className={`py-3 text-base ${pathname === "/" ? "text-dark font-medium" : "text-gray-600"}`}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Home
+                  </motion.div>
+                </Link>
+                <Link href="/about" onClick={() => setIsMenuOpen(false)}>
+                  <motion.div
+                    className={`py-3 text-base ${pathname === "/about" ? "text-dark font-medium" : "text-gray-600"}`}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    About Us
+                  </motion.div>
+                </Link>
+
+                {/* Mobile Members Dropdown */}
+                <div className="py-1">
+                  <motion.button
+                    onClick={() => setMembersDropdownOpen(!membersDropdownOpen)}
+                    className={`flex w-full items-center py-3 text-base ${
+                      pathname.startsWith("/members") ? "text-dark font-medium" : "text-gray-600"
+                    }`}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Members
+                    <RiArrowDownSLine
+                      className={`ml-2 transition-transform duration-200 ${membersDropdownOpen ? "transform rotate-180" : ""}`}
+                    />
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {membersDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="pl-4 space-y-1"
+                      >
+                        {membersLinks.map((link) => (
+                          <Link key={link.href} href={link.href} onClick={() => setIsMenuOpen(false)}>
+                            <motion.div
+                              className={`py-2 text-sm ${
+                                pathname === link.href ? "text-dark font-medium" : "text-gray-600"
+                              }`}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              {link.label}
+                            </motion.div>
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {[{ path: "/constitution", label: "Constitution" },
                   { path: "/events", label: "Events" },
                   { path: "/activities", label: "Activities" },
                   { path: "/consent", label: "Consent Forms" },
                   { path: "/journal", label: "Journal" },
                   { path: "/gallery", label: "Gallery" },
-                  { path: "/contact", label: "Contact" },
-                ].map((item) => (
-                  <Link key={item.path} href={item.path} onClick={() => setIsMenuOpen(false)}>
-                    <motion.div
-                      className={`py-3 text-base ${pathname === item.path ? "text-dark font-medium" : "text-gray-600"}`}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {item.label}
-                    </motion.div>
-                  </Link>
+                  { path: "/contact", label: "Contact" }].map((item) => (
+                    <Link key={item.path} href={item.path} onClick={() => setIsMenuOpen(false)}>
+                      <motion.div
+                        className={`py-3 text-base ${pathname === item.path ? "text-dark font-medium" : "text-gray-600"}`}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {item.label}
+                      </motion.div>
+                    </Link>
                 ))}
               </div>
             </nav>
@@ -160,7 +296,6 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      {/* Search Overlay */}
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
@@ -191,6 +326,5 @@ export default function Header() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }
-
