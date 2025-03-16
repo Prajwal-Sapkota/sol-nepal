@@ -1,15 +1,96 @@
 "use client"
-import { RiImageLine, RiArrowRightSLine, RiCalendarLine, RiUserLine } from "react-icons/ri"
+import { useMemo, useState, useEffect } from "react"
+import {RiImageLine, RiArrowRightSLine, RiCalendarLine, RiUserLine, RiCloseLine, RiArrowLeftLine, RiArrowRightLine} from "react-icons/ri"
 import Image from "next/image"
 import Link from "next/link"
 
+const getRandomItems = (array, count) => {
+  const shuffled = [...array].sort(() => 0.5 - Math.random())
+  return shuffled.slice(0, count)
+}
+
+const galleryData = [
+  {
+    id: "9th-national-conference",
+    title: "9th National Conference",
+    coverImage: "/images/9thnational-conference/cover.jpg",
+    images: [
+      { src: "/images/9thnational-conference/image1.jpg", alt: "9thnational1" },
+      { src: "/images/9thnational-conference/image2.jpg", alt: "9thnational2" },
+      { src: "/images/9thnational-conference/image3.jpg", alt: "9thnational3" },
+      { src: "/images/9thnational-conference/image4.jpg", alt: "9thnational4" },
+      { src: "/images/9thnational-conference/image5.jpg", alt: "9thnational5" },
+    ],
+  },
+  {
+    id: "world-hearing-day-2023",
+    title: "World Hearing Day 2023",
+    coverImage: "/images/world-hearing-day-2023/cover.jpg",
+    images: [
+      { src: "/images/world-hearing-day-2023/image1.jpg", alt: "worldhearing1" },
+      { src: "/images/world-hearing-day-2023/image2.jpg", alt: "worldhearing2" },
+      { src: "/images/world-hearing-day-2023/image3.jpg", alt: "worldhearing3" },
+    ],
+  },
+  {
+    id: "cme-programme",
+    title: "CME PROGRAMME",
+    coverImage: "/images/cme-program/cover.jpg",
+    images: [
+      { src: "/images/cme-program/image1.jpg", alt: "cme1" },
+      { src: "/images/cme-program/image2.jpg", alt: "cme2" },
+      { src: "/images/cme-program/image3.jpg", alt: "cme3" },
+      { src: "/images/cme-program/image4.jpg", alt: "cme4" },
+      { src: "/images/cme-program/image5.jpg", alt: "cme5" },
+    ],
+  },
+]
+
 const EventsCard = () => {
-  const galleryImages = [
-    "/images/gallery11.jpg",
-    "/images/gallery2.jpg",
-    "/images/gallery3.jpg",
-    "/images/gallery4.jpg",
-  ]
+  const randomGalleryImages = useMemo(() => {
+    const allImages = galleryData.flatMap((album) => album.images)
+    return getRandomItems(allImages, 4)
+  }, [])
+
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedIndex, setSelectedIndex] = useState(null)
+
+  const handleImageClick = (index) => {
+    setSelectedImage(randomGalleryImages[index])
+    setSelectedIndex(index)
+  }
+
+  const handlePrevImage = () => {
+    if (selectedIndex > 0) {
+      setSelectedIndex(selectedIndex - 1)
+      setSelectedImage(randomGalleryImages[selectedIndex - 1])
+    }
+  }
+
+  const handleNextImage = () => {
+    if (selectedIndex < randomGalleryImages.length - 1) {
+      setSelectedIndex(selectedIndex + 1)
+      setSelectedImage(randomGalleryImages[selectedIndex + 1])
+    }
+  }
+
+  const handleClose = () => {
+    setSelectedImage(null)
+    setSelectedIndex(null)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowLeft") handlePrevImage()
+    if (e.key === "ArrowRight") handleNextImage()
+    if (e.key === "Escape") handleClose()
+  }
+
+  useEffect(() => {
+    if (selectedImage !== null) {
+      document.addEventListener("keydown", handleKeyDown)
+      return () => document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [selectedImage, selectedIndex])
 
   return (
     <section className="py-12 bg-muted">
@@ -35,8 +116,8 @@ const EventsCard = () => {
               title: "Photo Gallery",
               description: "Browse photos from our events",
               link: "/gallery",
-              linkText: "View Gallery",
-              images: galleryImages,
+              linkText: "View All Images",
+              images: randomGalleryImages,
             },
           ].map((card, index) => (
             <div
@@ -52,10 +133,14 @@ const EventsCard = () => {
               {card.images && (
                 <div className="grid grid-cols-2 gap-2 mb-4">
                   {card.images.map((image, idx) => (
-                    <div key={idx} className="relative group aspect-square">
+                    <div
+                      key={idx}
+                      className="relative group aspect-square cursor-pointer"
+                      onClick={() => handleImageClick(idx)}
+                    >
                       <Image
-                        src={image || "/placeholder.svg"}
-                        alt={`Gallery Image ${idx + 1}`}
+                        src={image.src }
+                        alt={image.alt || `Gallery Image ${idx + 1}`}
                         fill
                         className="object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
                       />
@@ -74,9 +159,56 @@ const EventsCard = () => {
           ))}
         </div>
       </div>
+
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50" onClick={handleClose}>
+          <button
+            className="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
+            onClick={handleClose}
+            aria-label="Close lightbox"
+          >
+            <RiCloseLine className="w-8 h-8" />
+          </button>
+
+          {selectedIndex > 0 && (
+            <button
+              className="absolute left-4 text-white hover:text-gray-300 z-50 p-2"
+              onClick={(e) => {
+                e.stopPropagation()
+                handlePrevImage()
+              }}
+              aria-label="Previous image"
+            >
+              <RiArrowLeftLine className="w-8 h-8" />
+            </button>
+          )}
+
+          {selectedIndex < randomGalleryImages.length - 1 && (
+            <button
+              className="absolute right-4 text-white hover:text-gray-300 z-50 p-2"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleNextImage()
+              }}
+              aria-label="Next image"
+            >
+              <RiArrowRightLine className="w-8 h-8" />
+            </button>
+          )}
+
+          <div className="relative w-full max-w-5xl aspect-[4/3] mx-4">
+            <Image
+              src={selectedImage.src }
+              alt={selectedImage.alt}
+              fill
+              className="object-contain"
+              sizes="(max-width: 1024px) 100vw, 1024px"
+            />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
 
 export default EventsCard
-
