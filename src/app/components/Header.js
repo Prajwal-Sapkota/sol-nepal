@@ -90,8 +90,8 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
-            <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-primary/80 sm:h-12 sm:w-12">
-              <Image src="/images/logo-1.png" alt="SOL Logo" layout="fill" objectFit="cover" priority />
+            <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-primary/80 sm:h-12 sm:w-12">
+              <Image src="/images/logo-1.jpg" alt="SOL Logo" layout="fill" objectFit="cover" priority />
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-gray-800 sm:text-xl lg:text-2xl">SOL Nepal</span>

@@ -8,7 +8,7 @@ const Activities = () => {
         <div className="grid grid-cols-1 gap-8">
           <div className="flex justify-center items-center">
             <Image
-              src="/images/activities1.jpeg" 
+              src="/images/activities1.jpg" 
               alt="Activity 1"
               width={1000}
               height={1200}
@@ -17,7 +17,7 @@ const Activities = () => {
           </div>
           <div className="flex justify-center items-center">
             <Image
-              src="/images/activities2.jpeg" 
+              src="/images/activities2.jpg" 
               alt="Activity 2"
               width={1000}
               height={1200}
