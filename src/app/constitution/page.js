@@ -23,16 +23,8 @@ export default function ConstitutionPage() {
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="mx-auto">
             <h1 className="text-3xl font-bold text-dark mb-6 text-center">Constitution</h1>
-
-            <div className="mb-4 flex justify-end">
-              <a
-                href={pdfUrl}
-                download
-                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors flex items-center"
-              >
-                <FaDownload className="mr-2" /> Download PDF
-              </a>
-            </div>
+              
+          
 
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="bg-primary p-4 sm:p-6">
