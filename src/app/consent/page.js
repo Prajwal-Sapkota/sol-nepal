@@ -1,10 +1,11 @@
 "use client"
 import { useState } from "react"
-import { RiArrowLeftLine, RiDownloadLine } from "react-icons/ri"
+import { RiArrowLeftLine } from "react-icons/ri"
 import { FaFilePdf } from "react-icons/fa"
 import dynamic from "next/dynamic"
 
-const SPdfViewer = dynamic(() => import("../components/SPdfViewer"), {
+// Dynamically import the EnhancedPdfViewer with SSR disabled
+const EnhancedPdfViewer = dynamic(() => import("../components/EnhancedPdfViewer"), {
   ssr: false,
   loading: () => (
     <div className="h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
@@ -72,23 +73,13 @@ export default function ConsentFormsPage() {
               </ul>
             ) : (
               <div>
-                <div className="flex justify-between items-center mb-4">
-                  <button
-                    onClick={handleBack}
-                    className="text-lg text-gray-600 hover:text-primary flex items-center transition-colors duration-200"
-                  >
-                    <RiArrowLeftLine className="mr-2" />
-                    Back to Consent Forms
-                  </button>
-
-                  <a
-                    href={selectedForm.file}
-                    download
-                    className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors flex items-center"
-                  >
-                    <RiDownloadLine className="mr-2" /> Download PDF
-                  </a>
-                </div>
+                <button
+                  onClick={handleBack}
+                  className="text-lg text-gray-600 hover:text-primary mb-4 flex items-center transition-colors duration-200"
+                >
+                  <RiArrowLeftLine className="mr-2" />
+                  Back to Consent Forms
+                </button>
 
                 <div className="mt-4 bg-white rounded-xl shadow-lg overflow-hidden">
                   <div className="bg-primary p-4 sm:p-6">
@@ -98,7 +89,7 @@ export default function ConsentFormsPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <SPdfViewer pdfUrl={selectedForm.file} title={selectedForm.title} />
+                    <EnhancedPdfViewer pdfUrl={selectedForm.file} title={selectedForm.title} />
                   </div>
                 </div>
               </div>

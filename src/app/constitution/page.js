@@ -2,7 +2,7 @@
 import { FaFilePdf, FaDownload } from "react-icons/fa"
 import dynamic from "next/dynamic"
 
-const SPdfViewer = dynamic(() => import("../components/SPdfViewer"), {
+const EnhancedPdfViewer = dynamic(() => import("../components/EnhancedPdfViewer"), {
   ssr: false,
   loading: () => (
     <div className="h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
@@ -43,7 +43,7 @@ export default function ConstitutionPage() {
               </div>
 
               <div className="p-4">
-                <SPdfViewer pdfUrl={pdfUrl} title="SOL Nepal Constitution" />
+                <EnhancedPdfViewer pdfUrl={pdfUrl} title="SOL Nepal Constitution" />
               </div>
             </div>
           </div>
