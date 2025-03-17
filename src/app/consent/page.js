@@ -1,8 +1,20 @@
 "use client"
 import { useState } from "react"
-import PdfViewer from "../components/PdfViewer"
-import { RiArrowLeftLine } from "react-icons/ri"
+import { RiArrowLeftLine, RiDownloadLine } from "react-icons/ri"
 import { FaFilePdf } from "react-icons/fa"
+import dynamic from "next/dynamic"
+
+const SPdfViewer = dynamic(() => import("../components/SPdfViewer"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
+      <div className="flex flex-col items-center">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-gray-600">Loading PDF viewer...</p>
+      </div>
+    </div>
+  ),
+})
 
 const consentForms = [
   { id: 1, title: "Tracheostomy", file: "/documents/Tracheostomy.pdf" },
@@ -60,13 +72,24 @@ export default function ConsentFormsPage() {
               </ul>
             ) : (
               <div>
-                <button
-                  onClick={handleBack}
-                  className="text-lg text-gray-600 hover:text-primary mb-4 flex items-center transition-colors duration-200"
-                >
-                  <RiArrowLeftLine className="mr-2" />
-                  Back to Consent Forms
-                </button>
+                <div className="flex justify-between items-center mb-4">
+                  <button
+                    onClick={handleBack}
+                    className="text-lg text-gray-600 hover:text-primary flex items-center transition-colors duration-200"
+                  >
+                    <RiArrowLeftLine className="mr-2" />
+                    Back to Consent Forms
+                  </button>
+
+                  <a
+                    href={selectedForm.file}
+                    download
+                    className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors flex items-center"
+                  >
+                    <RiDownloadLine className="mr-2" /> Download PDF
+                  </a>
+                </div>
+
                 <div className="mt-4 bg-white rounded-xl shadow-lg overflow-hidden">
                   <div className="bg-primary p-4 sm:p-6">
                     <div className="flex items-center">
@@ -75,7 +98,7 @@ export default function ConsentFormsPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <PdfViewer pdfUrl={selectedForm.file} />
+                    <SPdfViewer pdfUrl={selectedForm.file} title={selectedForm.title} />
                   </div>
                 </div>
               </div>
