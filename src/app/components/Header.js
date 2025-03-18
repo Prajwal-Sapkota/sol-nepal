@@ -57,8 +57,8 @@ export default function Header() {
 
   const membersLinks = [
     { href: "/sol-members", label: "SOL Members" },
-    { href: "/members/membershipform", label: "Membership Form" },
-    { href: "/members/executivecommitte", label: "Executive Committee" },
+    { href: "/membershipform", label: "Membership Form" },
+    { href: "/executivecommitte", label: "Executive Committee" },
   ];
 
   const handleMouseEnter = () => {

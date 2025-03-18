@@ -10,7 +10,7 @@ const CustomFileUpload = ({ register, name, label, required, error, multiple = f
     if (event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files)
       const allowedTypes = ["image/jpeg", "image/png", "image/gif"]
-      const maxSize = 2 * 1024 * 1024
+      const maxSize = 500 * 1024
       
       const validFiles = selectedFiles.filter((file) => {
         return allowedTypes.includes(file.type) && file.size <= maxSize

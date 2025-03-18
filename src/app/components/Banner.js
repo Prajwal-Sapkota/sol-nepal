@@ -69,7 +69,7 @@ const Banner = () => {
           WELCOME <br /> to Society of Otolaryngologists of Nepal
         </h1>
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
-          <Link href="/members/membershipform">
+          <Link href="/membershipform">
             <button className="px-6 py-3 text-lg sm:text-xl bg-primary text-white rounded-lg hover:bg-primary-dark transition">
               Become a Member
             </button>
