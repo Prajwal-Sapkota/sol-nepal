@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import QueryProvider from "./QueryProvider";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,12 +16,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export async function generateMetadata() {
-  return {
-    title: "Society of Otolaryngologists of Nepal",
-    description: "Stay updated with the latest news and events in Otolaryngology.",
-  };
-}
+export const metadata = {
+  title: {
+    template: "%s | SOL Nepal",
+    default: "SOL Nepal",
+  },
+  description:
+    "The Society of Otolaryngologists of Nepal (SOL Nepal) is an organization of Otorhinolaryngologists dedicated to advancing ENT care across Nepal.",
+  keywords: ["ENT", "Otolaryngology", "Nepal", "SOL Nepal"],
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
