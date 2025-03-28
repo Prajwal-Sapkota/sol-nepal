@@ -56,7 +56,7 @@ export default function Header() {
   };
 
   const membersLinks = [
-    { href: "/sol-members", label: "SOL Members" },
+    { href: "/solmembers", label: "SOL Members" },
     { href: "/membershipform", label: "Membership Form" },
     { href: "/executivecommitte", label: "Executive Committee" },
   ];
